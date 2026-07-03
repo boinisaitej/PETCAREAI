@@ -106,11 +106,15 @@ export default function RegisterPage() {
       login(res.data.access_token, res.data.user);
       router.push("/dashboard");
     } catch (err: any) {
-      const detail = err.response?.data?.detail;
-      if (Array.isArray(detail)) {
-        setServerError(detail.map((e: any) => e.msg || JSON.stringify(e)).join(", "));
+      if (!err.response) {
+        setServerError("Cannot reach the server. It may be waking up (free hosting sleeps after idle) — wait ~30s and try again. If this persists, the app's API URL is misconfigured.");
       } else {
-        setServerError(typeof detail === "string" ? detail : "Registration failed. Please try again.");
+        const detail = err.response?.data?.detail;
+        if (Array.isArray(detail)) {
+          setServerError(detail.map((e: any) => e.msg || JSON.stringify(e)).join(", "));
+        } else {
+          setServerError(typeof detail === "string" ? detail : "Registration failed. Please try again.");
+        }
       }
     } finally {
       setLoading(false);

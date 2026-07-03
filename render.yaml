@@ -19,7 +19,9 @@ services:
       - key: UPLOAD_DIR
         value: /var/data/uploads
       - key: FRONTEND_ORIGINS
-        sync: false # set to your Vercel URL, e.g. https://petcare.vercel.app
+        # Wildcard works out of the box (auth uses Bearer headers, not cookies).
+        # Tighten to your Vercel URL(s) later, e.g. https://petcare.vercel.app
+        value: "*"
       - key: ACCESS_TOKEN_EXPIRE_MINUTES
         value: "10080"
     disk:

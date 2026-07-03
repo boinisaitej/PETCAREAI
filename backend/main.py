@@ -13,10 +13,31 @@ from app.database import create_tables
 from app.routers import auth, pets, logs, medical, ai_features, community, realtime, vet
 from app.routers import vet_chat, care, finance
 
+def _seed_if_empty():
+    """Seed demo accounts/data on first boot when the database has no users.
+
+    Hosted free tiers (Render/Railway) offer no shell to run `python seed.py`,
+    so without this the demo credentials shown on the login page would 401.
+    Set AUTO_SEED_DEMO=false to disable.
+    """
+    if os.getenv("AUTO_SEED_DEMO", "true").strip().lower() in ("0", "false", "no"):
+        return
+    from app.database import SessionLocal, User
+    db = SessionLocal()
+    try:
+        has_users = db.query(User).first() is not None
+    finally:
+        db.close()
+    if not has_users:
+        import seed
+        seed.seed()
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     create_tables()
     os.makedirs(os.getenv("UPLOAD_DIR", "uploads"), exist_ok=True)
+    _seed_if_empty()
     yield
 
 app = FastAPI(
