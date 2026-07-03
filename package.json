@@ -1,0 +1,8 @@
+{
+  "name": "petcareai",
+  "private": true,
+  "comment": "Repo root is not a Node project; the Next.js app lives in frontend/. This file exists only so Vercel's Next.js version detection passes when the project's Root Directory is left at the repo root (see vercel.json). Keep the next version in sync with frontend/package.json.",
+  "dependencies": {
+    "next": "16.2.9"
+  }
+}
