@@ -1,0 +1,28 @@
+# Render blueprint for the FastAPI backend.
+# Vercel hosts only the Next.js frontend (frontend/); deploy this API on Render
+# (or Railway with backend/Procfile) and point NEXT_PUBLIC_API_URL at it.
+services:
+  - type: web
+    name: petcare-api
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        value: sqlite:////var/data/petcare.db
+      - key: UPLOAD_DIR
+        value: /var/data/uploads
+      - key: FRONTEND_ORIGINS
+        sync: false # set to your Vercel URL, e.g. https://petcare.vercel.app
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "10080"
+    disk:
+      name: petcare-data
+      mountPath: /var/data
+      sizeGB: 1
