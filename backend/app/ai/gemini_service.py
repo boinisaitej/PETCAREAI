@@ -9,8 +9,10 @@ load_dotenv()
 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-_text_model = genai.GenerativeModel("gemini-1.5-flash")
-_vision_model = genai.GenerativeModel("gemini-1.5-flash")
+# gemini-1.5-* is retired; the -latest alias tracks the current stable flash model.
+_MODEL_NAME = os.getenv("GEMINI_MODEL", "gemini-flash-latest")
+_text_model = genai.GenerativeModel(_MODEL_NAME)
+_vision_model = genai.GenerativeModel(_MODEL_NAME)
 
 
 def _safe_generate(model, prompt, image=None) -> str:

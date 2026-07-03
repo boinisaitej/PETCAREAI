@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "py .claude/hooks/protect_env.py",
+            "command": "py \"$CLAUDE_PROJECT_DIR/.claude/hooks/protect_env.py\"",
             "timeout": 15,
             "statusMessage": "Checking .env protection..."
           }
@@ -19,7 +19,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "py .claude/hooks/backend_import_check.py",
+            "command": "py \"$CLAUDE_PROJECT_DIR/.claude/hooks/backend_import_check.py\"",
             "timeout": 120,
             "statusMessage": "Verifying backend still imports..."
           }

@@ -12,7 +12,9 @@ data = json.load(sys.stdin)
 path = ((data.get("tool_input") or {}).get("file_path") or "").replace("\\", "/")
 
 if "/backend/" in path and path.endswith(".py"):
-    backend_dir = os.path.join(os.getcwd(), "backend")
+    # Resolve backend/ from this script's location — hook cwd is not guaranteed
+    project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    backend_dir = os.path.join(project_root, "backend")
     result = subprocess.run(
         [sys.executable, "-c", "import main"],
         cwd=backend_dir, capture_output=True, text=True, timeout=90,
