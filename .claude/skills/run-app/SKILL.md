@@ -40,3 +40,7 @@ Or the user-facing scripts: `start-backend.bat` / `start-frontend.bat`.
   the backend after adding model columns.
 - If login returns 500 with a bcrypt "72 bytes" error: `py -m pip install bcrypt==4.1.3`.
 - Stop servers before `npm run build` on Windows (file locks on `.next/`).
+- If every page returns 500 with `TurbopackInternalError ... 0xc0000142` in
+  `frontend/.next/dev/logs/next-development.log`: a long-running dev server has
+  wedged (its PostCSS worker can no longer spawn). Kill the PID shown by
+  `next dev`'s "already running" notice, `rm -rf frontend/.next/dev`, restart.
